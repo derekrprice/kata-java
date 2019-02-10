@@ -1,3 +1,5 @@
+import com.google.common.collect.SortedSetMultimap;
+import com.google.common.collect.TreeMultimap;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -13,7 +15,8 @@ public class ProductCatalog {
     /**
      * The catalog of existing products.  Read from the CSV inputs.
      */
-    private SortedMap<Double, Product> catalog;
+    private SortedSetMultimap<Double, Product> priceIndex;
+    private Map<Integer, Product> catalog;
 
     public ProductCatalog() {
         init();
@@ -40,7 +43,7 @@ public class ProductCatalog {
    }
 
    public Set<Map.Entry<Double, Product>> getProductSet() {
-        return Collections.unmodifiableSet(catalog.entrySet());
+        return Collections.unmodifiableSet(priceIndex.entries());
    }
 
    public int size() {
@@ -59,7 +62,7 @@ public class ProductCatalog {
        // Here, I am just looping over the products in the catalog and extracting
        // any matching the regular expression in the category or the description.
        List<Product> products =
-           catalog.entrySet().stream()
+           priceIndex.entries().stream()
            .map(e -> e.getValue())
            .filter(
                    p -> !p.getCategories().stream()
@@ -74,15 +77,29 @@ public class ProductCatalog {
    }
 
    private void init() {
-        catalog = new TreeMap<>();
+       catalog = new TreeMap<>();
+       priceIndex = TreeMultimap.create();
    }
 
    private void addProductFromFileRow(CSVRecord productData) {
        try {
            Product product = new Product(productData);
-           catalog.put(product.getPrice(), product); }
-       catch (Exception e) {
+           addProduct(product);
+       } catch (Exception e) {
            System.err.println("Failed to parse" + productData + " because " + e);
        }
+   }
+
+   private void addProduct(Product product) {
+       if (catalog.containsKey(product.getProductNum())) {
+           removeProduct(product);
+       }
+       priceIndex.put(product.getPrice(), product);
+       catalog.put(product.getProductNum(), product);
+   }
+
+   private void removeProduct(Product product) {
+       priceIndex.remove(catalog.get(product.getProductNum()).getPrice(), catalog.get(product.getProductNum()));
+       catalog.remove(product.getProductNum());
    }
 }

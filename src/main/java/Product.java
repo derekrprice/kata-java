@@ -6,7 +6,7 @@ import java.util.List;
 enum UOM {
     BX, DZ, EA, PK
 }
-public class Product {
+public class Product implements Comparable {
     private int productNum;
     private String description;
     private List<String> categories;
@@ -51,5 +51,15 @@ public class Product {
 
     public int getDiscount() {
         return discount;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if (o instanceof Product) {
+            Product p = (Product) o;
+            return Integer.compare(productNum, p.getProductNum());
+        } else {
+            throw new IllegalArgumentException("Product may only be compared to other products.");
+        }
     }
 }

@@ -3,3 +3,6 @@
 /build/
 /lib/
 *.iml
+/gradle
+/*.ipr
+/*.iws

@@ -14,12 +14,12 @@ public class SortPaperTest {
 
     @Test
     void testRowCount() {
-        Assertions.assertEquals(10, catalog.size());
+        Assertions.assertEquals(9, catalog.size());
     }
 
     @Test
     void testCountMatched() {
-        Assertions.assertEquals(4, catalog.getProductsByCategory(".*paper.*").size());
+        Assertions.assertEquals(3, catalog.getProductsByCategory(".*paper.*").size());
     }
 
     @Test
