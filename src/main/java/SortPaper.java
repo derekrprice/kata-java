@@ -1,19 +1,12 @@
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
-
-import java.io.IOException;
-import java.io.Reader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
-import java.util.SortedMap;
-import java.util.TreeMap;
 import java.util.stream.Collectors;
 
+/**
+ * This is the main application class for the SortPaper application.  This application loads a product catalog
+ * from a list of CSV files, then sorts the list by price, including any discounts, and prints out just the
+ * paper products from the catalog.
+ */
 public class SortPaper {
-    private static SortedMap<Double, Product> products;
-
     public static void main (String[] args) {
         if (args.length < 1) {
             System.err.print("File name is a required argument.");
@@ -21,19 +14,16 @@ public class SortPaper {
         }
 
         // Parse the file.
-        products = new TreeMap<>();
+        ProductCatalog catalog = new ProductCatalog();
         for (String fileName : args) {
-            SortPaper.readCSV(
-                fileName,
-                row -> {
-                    try { Product p = new Product(row); products.put(p.getPrice(), p); }
-                    catch (Exception e) { System.err.println("Failed to parse" + row + " because " + e); }
-                }
-            );
+            catalog.addProducts(fileName);
         }
 
         // Extract the list of production with a category containing "paper".
-        List<Product> paperProducts = products.entrySet().stream()
+        // If we swapped out the storage layer here, this could be SQL or whatever.
+        // Here, I am just looping over the products in the catalog and extracting
+        // any with the word "paper" in the category or the description.
+        List<Product> paperProducts = catalog.getProductSet().stream()
                 .map(e -> e.getValue())
                 .filter(
                         p -> !p.getCategories().stream()
@@ -51,18 +41,4 @@ public class SortPaper {
         }
     }
 
-    public static void readCSV(String fileName, CSVRowOperator processRow) {
-        try (
-            Reader reader = Files.newBufferedReader(Paths.get(fileName));
-            CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT);
-        ) {
-            int row = 0;
-            for (CSVRecord csvRecord : csvParser) {
-                if (row++ == 0) continue;
-                processRow.op(csvRecord);
-            }
-        } catch (IOException e ) {
-
-        }
-    }
 }
