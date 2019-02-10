@@ -15,12 +15,12 @@ public class Product {
     private int discount;
 
     public Product(CSVRecord row) {
-        productNum = Integer.parseInt(row.get(0));
-        description = row.get(1);
-        categories = Arrays.asList(row.get(2).split(","));
-        unitOfMeasure = UOM.valueOf(row.get(3));
-        price = Double.parseDouble(row.get(4));
-        if (!row.get(5).isEmpty()) {
+        productNum = Integer.parseInt(row.get("part #"));
+        description = row.get("Description");
+        categories = Arrays.asList(row.get("Category").split(","));
+        unitOfMeasure = UOM.valueOf(row.get("UOM"));
+        price = Double.parseDouble(row.get("Price"));
+        if (!row.get("Discount").isEmpty()) {
             discount = Integer.parseInt(row.get(5).replaceAll("%$", ""));
         }
     }

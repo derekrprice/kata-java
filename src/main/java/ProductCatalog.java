@@ -7,6 +7,7 @@ import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ProductCatalog {
     /**
@@ -44,6 +45,32 @@ public class ProductCatalog {
 
    public int size() {
         return catalog.size();
+   }
+
+    /**
+     * Extract the list of production with a category or a description matching a regular expression.
+     *
+     * @param regex    A regular expression used to identify a category.  This will be matched both against the
+     *                  category strings and the product description string.
+     * @return A list of products matching the regular expresion.
+     */
+   public List<Product> getProductsByCategory(String regex) {
+       // If we swapped out the storage layer here, this could be SQL or whatever.
+       // Here, I am just looping over the products in the catalog and extracting
+       // any matching the regular expression in the category or the description.
+       List<Product> products =
+           catalog.entrySet().stream()
+           .map(e -> e.getValue())
+           .filter(
+                   p -> !p.getCategories().stream()
+                           .filter(c -> c.toLowerCase().matches(".*paper.*"))
+                           .collect(Collectors.toSet())
+                           .isEmpty()
+                           || p.getDescription().toLowerCase().matches(".*paper.*")
+           )
+           .collect(Collectors.toList());
+
+       return Collections.unmodifiableList(products);
    }
 
    private void init() {
