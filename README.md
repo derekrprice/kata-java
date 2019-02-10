@@ -1,5 +1,6 @@
 # Java Kata
-To run this kata with the default input file, clone this project to a machine
+This is a simple project to demonstrate some Java-fu.  The original problem definition
+is below.  To run this kata with the default input file, clone this project to a machine
 with Gradle and an Java 8 JDK installed.  Then:
 
 ```gradle run --args='Catalog.csv'```

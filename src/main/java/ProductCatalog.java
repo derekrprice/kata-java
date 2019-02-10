@@ -63,10 +63,10 @@ public class ProductCatalog {
            .map(e -> e.getValue())
            .filter(
                    p -> !p.getCategories().stream()
-                           .filter(c -> c.toLowerCase().matches(".*paper.*"))
+                           .filter(c -> c.toLowerCase().matches(regex))
                            .collect(Collectors.toSet())
                            .isEmpty()
-                           || p.getDescription().toLowerCase().matches(".*paper.*")
+                           || p.getDescription().toLowerCase().matches(regex)
            )
            .collect(Collectors.toList());
 

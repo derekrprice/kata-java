@@ -18,8 +18,12 @@ public class SortPaperTest {
     }
 
     @Test
-    void testCountPaper() {
+    void testCountMatched() {
         Assertions.assertEquals(4, catalog.getProductsByCategory(".*paper.*").size());
     }
 
+    @Test
+    void testCountUnmatched() {
+        Assertions.assertEquals(0, catalog.getProductsByCategory(".*space\\s*ship.*").size());
+    }
 }
