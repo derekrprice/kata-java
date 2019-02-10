@@ -13,17 +13,13 @@ public class SortPaperTest {
     }
 
     @Test
-    void testHeaders() {
-        //Assertions.assertEquals("part #", csvRecords.get(0).get(0));
-        //Assertions.assertEquals("Description", csvRecords.get(0).get(1));
-        //Assertions.assertEquals("Category", csvRecords.get(0).get(2));
-        //Assertions.assertEquals("UOM", csvRecords.get(0).get(3));
-        //Assertions.assertEquals("Price", csvRecords.get(0).get(4));
-        //Assertions.assertEquals("Discount", csvRecords.get(0).get(5));
+    void testRowCount() {
+        Assertions.assertEquals(10, catalog.size());
     }
 
     @Test
-    void testRowCount() {
-        Assertions.assertEquals(12, catalog.size());
+    void testCountPaper() {
+        Assertions.assertEquals(4, catalog.getProductsByCategory(".*paper.*").size());
     }
+
 }
