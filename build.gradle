@@ -1,6 +1,7 @@
 plugins {
     id 'idea'
     id 'java'
+    id 'application'
 }
 
 sourceCompatibility = '1.8'
@@ -21,4 +22,11 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    testLogging {
+        events 'PASSED', 'SKIPPED', 'SKIPPED'
+    }
+}
+
+application {
+    mainClassName = 'SortPaper'
 }
