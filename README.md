@@ -9,7 +9,7 @@ To parse different, or even multiple, catalog files, simply add them as
 space-delimited file names to the "--args=" argument, inside of the single quotes.
 To run the project tests:
 
-```gradle test```
+```gradle clean test```
 
 ## Assumptions
 The problem definition left some leeway for interpretation, so these are the
