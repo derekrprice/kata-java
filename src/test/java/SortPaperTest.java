@@ -3,6 +3,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SortPaperTest {
@@ -10,7 +11,8 @@ public class SortPaperTest {
 
     @BeforeEach
     public void setUp() {
-        csvRecords = SortPaper.getCSV("Catalog.csv");
+        csvRecords = new ArrayList<>();
+        SortPaper.readCSV("Catalog.csv", row -> csvRecords.add(row));
     }
 
     @Test

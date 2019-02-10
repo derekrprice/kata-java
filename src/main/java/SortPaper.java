@@ -10,29 +10,30 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SortPaper {
+    private static List<Product> products;
+
     public static void main (String[] args) {
         if (args.length < 1) {
             System.err.print("File name is a required argument.");
             System.exit(2);
         }
 
+        products = new ArrayList<>();
         for (String fileName : args) {
-            List<CSVRecord> products = SortPaper.getCSV(fileName);
+            SortPaper.readCSV(fileName, row -> products.add(new Product(row)));
         }
     }
 
-    public static List<CSVRecord> getCSV (String fileName) {
-        List<CSVRecord> out = new ArrayList<CSVRecord>();
+    public static void readCSV(String fileName, CSVRowOperator processRow) {
         try (
             Reader reader = Files.newBufferedReader(Paths.get(fileName));
             CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT);
         ) {
             for (CSVRecord csvRecord : csvParser) {
-                out.add(csvRecord);
+                processRow.op(csvRecord);
             }
         } catch (IOException e ) {
 
         }
-        return out;
     }
 }
