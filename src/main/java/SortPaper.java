@@ -20,9 +20,16 @@ public class SortPaper {
             System.exit(2);
         }
 
+        // Parse the file.
         products = new TreeMap<>();
         for (String fileName : args) {
-            SortPaper.readCSV(fileName, row -> { Product p = new Product(row); products.put(p.getPrice(), p); });
+            SortPaper.readCSV(
+                fileName,
+                row -> {
+                    try { Product p = new Product(row); products.put(p.getPrice(), p); }
+                    catch (Exception e) { System.err.println("Failed to parse" + row + " because " + e); }
+                }
+            );
         }
 
         // Extract the list of production with a category containing "paper".
@@ -30,13 +37,16 @@ public class SortPaper {
                 .map(e -> e.getValue())
                 .filter(
                         p -> !p.getCategories().stream()
-                                .filter(c -> c.matches("paper"))
+                                .filter(c -> c.toLowerCase().matches(".*paper.*"))
                                 .collect(Collectors.toSet())
                                 .isEmpty()
+                             || p.getDescription().toLowerCase().matches(".*paper.*")
                 )
                 .collect(Collectors.toList());
 
+        // Output the paper products.
         for (Product product : paperProducts) {
+            // TODO: Output Product # and Price.
             System.out.println(product.getDescription());
         }
     }

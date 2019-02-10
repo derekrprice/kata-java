@@ -15,13 +15,14 @@ public class Product {
     private int discount;
 
     public Product(CSVRecord row) {
-        row.to
         productNum = Integer.parseInt(row.get(0));
         description = row.get(1);
         categories = Arrays.asList(row.get(2).split(","));
         unitOfMeasure = UOM.valueOf(row.get(3));
         price = Double.parseDouble(row.get(4));
-        discount = Integer.parseInt(row.get(5));
+        if (!row.get(5).isEmpty()) {
+            discount = Integer.parseInt(row.get(5).replaceAll("%$", ""));
+        }
     }
 
     public int getProductNum() {
