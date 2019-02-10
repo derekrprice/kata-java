@@ -11,15 +11,16 @@ public class Product {
     private String description;
     private List<String> categories;
     private UOM unitOfMeasure;
-    private float price;
+    private double price;
     private int discount;
 
     public Product(CSVRecord row) {
+        row.to
         productNum = Integer.parseInt(row.get(0));
         description = row.get(1);
         categories = Arrays.asList(row.get(2).split(","));
         unitOfMeasure = UOM.valueOf(row.get(3));
-        price = Float.parseFloat(row.get(4));
+        price = Double.parseDouble(row.get(4));
         discount = Integer.parseInt(row.get(5));
     }
 
@@ -39,8 +40,12 @@ public class Product {
         return unitOfMeasure;
     }
 
-    public float getPrice() {
+    public double getOriginalPrice() {
         return price;
+    }
+
+    public double getPrice() {
+        return Math.round(price * (100 - discount)) / 100.0;
     }
 
     public int getDiscount() {
