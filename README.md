@@ -3,13 +3,18 @@ This is a simple project to demonstrate some Java-fu.  The original problem defi
 is below.  To run this kata with the default input file, clone this project to a machine
 with Gradle 5.2.1 and a Java 8 JDK installed.  Then:
 
-```gradle run --args='Catalog.csv'```
+```
+gradle run --args "Catalog.csv"
+```
 
 To parse different, or even multiple, catalog files, simply add them as
-space-delimited file names to the "--args=" argument, inside of the single quotes.
-To run the project tests:
+space-delimited file names to the "--args" argument, inside of the quotes above
+(for example, ```gradle run --args "Catalog.csv ChallengingCatalog.csv"```).  To run
+the project tests:
 
-```gradle clean test```
+```
+gradle clean test
+```
 
 ## Assumptions
 The problem definition left some leeway for interpretation, so these are the

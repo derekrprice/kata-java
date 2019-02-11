@@ -35,7 +35,7 @@ public class ProductCatalog {
            // Could get the list of headers here from `headers = csvParser.getHeaderMap();` and do some explicit
            // file format checking.
            for (CSVRecord csvRecord : csvParser) {
-               addProductFromFileRow(csvRecord);
+               addProductFromFileRow(fileName, csvRecord);
            }
        } catch (IOException e ) {
            // This space intentionally left blank.  Just ignore unparsable rows.
@@ -81,17 +81,18 @@ public class ProductCatalog {
        priceIndex = TreeMultimap.create();
    }
 
-   private void addProductFromFileRow(CSVRecord productData) {
+   private void addProductFromFileRow(String fileName, CSVRecord productData) {
        try {
            Product product = new Product(productData);
            addProduct(product);
        } catch (Exception e) {
-           System.err.println("Failed to parse" + productData + " because " + e);
+           System.err.println("Failed to parse " + fileName + " line #" + productData.getRecordNumber() + " because " + e);
        }
    }
 
    private void addProduct(Product product) {
        if (catalog.containsKey(product.getPartNum())) {
+           System.err.println("Replacing part #" + product.getPartNum() + " with " + product.getDescription());
            removeProduct(product);
        }
        priceIndex.put(product.getPrice(), product);
