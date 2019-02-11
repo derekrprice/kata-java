@@ -25,7 +25,7 @@ public class Product implements Comparable {
         }
     }
 
-    public int getProductNum() {
+    public int getPartNum() {
         return productNum;
     }
 
@@ -37,8 +37,25 @@ public class Product implements Comparable {
         return categories;
     }
 
-    public UOM getUnitOfMeasure() {
-        return unitOfMeasure;
+    public String getUnitOfMeasure() {
+        String unit;
+        switch (unitOfMeasure) {
+            case BX:
+                unit = "Box";
+                break;
+            case DZ:
+                unit = "Dozen";
+                break;
+            case EA:
+                unit = "Each";
+                break;
+            case PK:
+                unit = "Pack";
+                break;
+            default:
+                throw new IllegalArgumentException("Unrecognized Unit of MEasure: " + unitOfMeasure);
+        }
+        return unit;
     }
 
     public double getOriginalPrice() {
@@ -57,9 +74,17 @@ public class Product implements Comparable {
     public int compareTo(Object o) {
         if (o instanceof Product) {
             Product p = (Product) o;
-            return Integer.compare(productNum, p.getProductNum());
+            return Integer.compare(productNum, p.getPartNum());
         } else {
             throw new IllegalArgumentException("Product may only be compared to other products.");
         }
+    }
+
+    public String getSummary() {
+        return getPartNum() + ", " + getDescription() + ", " + getFriendlyPrice();
+    }
+
+    private String getFriendlyPrice() {
+        return "$" + getPrice() + "/" + getUnitOfMeasure();
     }
 }

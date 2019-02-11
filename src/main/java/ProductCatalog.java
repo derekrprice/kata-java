@@ -91,15 +91,15 @@ public class ProductCatalog {
    }
 
    private void addProduct(Product product) {
-       if (catalog.containsKey(product.getProductNum())) {
+       if (catalog.containsKey(product.getPartNum())) {
            removeProduct(product);
        }
        priceIndex.put(product.getPrice(), product);
-       catalog.put(product.getProductNum(), product);
+       catalog.put(product.getPartNum(), product);
    }
 
    private void removeProduct(Product product) {
-       priceIndex.remove(catalog.get(product.getProductNum()).getPrice(), catalog.get(product.getProductNum()));
-       catalog.remove(product.getProductNum());
+       priceIndex.remove(catalog.get(product.getPartNum()).getPrice(), catalog.get(product.getPartNum()));
+       catalog.remove(product.getPartNum());
    }
 }

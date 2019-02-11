@@ -6,3 +6,5 @@
 /gradle
 /*.ipr
 /*.iws
+/gradlew
+/gradlew.bat

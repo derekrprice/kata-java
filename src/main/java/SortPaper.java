@@ -19,7 +19,7 @@ public class SortPaper {
         // Output the paper products.
         for (Product product : catalog.getProductsByCategory(".*paper.*")) {
             // TODO: Output Product # and Price.
-            System.out.println(product.getDescription());
+            System.out.println(product.getSummary());
         }
     }
 
